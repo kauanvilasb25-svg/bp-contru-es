@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bp construções — obras descomplicadas em curitiba</title>
+  <meta name="description" content="bp construções: 10 anos executando obras residenciais e comerciais em curitiba. soluções inteligentes pra projetos que costumam dar dor de cabeça." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Manrope', system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #f0ede8;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    ::selection { background: #4A9CC4; color: #fff; }
+
+    /* ─── CUSTOM CURSOR ────────────────────────────────────── */
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: #4A9CC4;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: exclusion;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(74,156,196,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.3s, height 0.3s;
+    }
+    body:hover .cursor { opacity: 1; }
+    a, button { cursor: none; }
+
+    /* ─── NAV ──────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 28px 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: padding 0.4s;
+    }
+    nav.scrolled {
+      padding: 18px 52px;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-logo img {
+      height: 34px;
+      filter: brightness(0) invert(1);
+      transition: transform 0.3s;
+    }
+    .nav-logo img:hover { transform: scale(1.04); }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: rgba(240,237,232,0.7);
+      text-transform: lowercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: #f0ede8; }
+    .nav-cta {
+      background: transparent;
+      border: 1px solid rgba(74,156,196,0.6);
+      color: #4A9CC4;
+      padding: 10px 26px;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: lowercase;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .nav-cta:hover {
+      background: #4A9CC4;
+      color: #fff;
+      border-color: #4A9CC4;
+    }
+
+    /* ─── HERO: SCROLL VIDEO ───────────────────────────────── */
+    #hero {
+      position: relative;
+      height: 600vh;
+    }
+    .hero-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      will-change: transform;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,10,10,0.12) 0%,
+        rgba(10,10,10,0.22) 60%,
+        rgba(10,10,10,0.55) 100%
+      );
+    }
+
+    /* ─── HERO TEXT LAYERS ─────────────────────────────────── */
+    .hero-text-layer {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 8%;
+      pointer-events: none;
+    }
+    .ht-block {
+      position: absolute;
+      max-width: 480px;
+      opacity: 0;
+      will-change: opacity, transform;
+      transition: opacity 0.7s cubic-bezier(0.25,0.46,0.45,0.94),
+                  transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .ht-block.left  { left: 8%; transform: translateX(-50px); }
+    .ht-block.right { right: 8%; text-align: right; transform: translateX(50px); }
+    .ht-block.center {
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%) scale(0.96);
+      text-align: center;
+      max-width: 700px;
+    }
+    .ht-block.visible {
+      opacity: 1 !important;
+    }
+    .ht-block.left.visible  { transform: translateX(0); }
+    .ht-block.right.visible { transform: translateX(0); }
+    .ht-block.center.visible { transform: translate(-50%, -50%) scale(1); }
+
+    .ht-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: #4A9CC4;
+      text-transform: lowercase;
+      margin-bottom: 16px;
+    }
+    .ht-headline {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #f0ede8;
+    }
+    .ht-headline em {
+      font-style: normal;
+      color: #4A9CC4;
+    }
+    .ht-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(240,237,232,0.75);
+      margin-top: 16px;
+    }
+
+    /* Hero opening (always visible at scroll 0) */
+    .ht-block.opening {
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      max-width: 800px;
+      transition-duration: 1s;
+    }
+    .ht-block.opening.visible {
+      transform: translate(-50%, -50%);
+    }
+    .ht-block.opening .ht-headline {
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 800;
+    }
+    .ht-block.opening .ht-sub {
+      font-size: 1.1rem;
+      margin-top: 20px;
+    }
+
+    /* stats */
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 28px;
+    }
+    .hero-stats.right { justify-content: flex-end; }
+    .stat-item {}
+    .stat-number {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #f0ede8;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: rgba(240,237,232,0.5);
+      text-transform: lowercase;
+      margin-top: 4px;
+    }
+
+    /* scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 1;
+      transition: opacity 0.5s;
+    }
+    .scroll-hint.hidden { opacity: 0; }
+    .scroll-hint span {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: rgba(240,237,232,0.5);
+      text-transform: lowercase;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, rgba(74,156,196,0.8), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.6); opacity: 0.4; }
+    }
+
+    /* ─── SECTION: SOBRE NÓS ───────────────────────────────── */
+    #sobre {
+      background: #f0ede8;
+      color: #1a1a1a;
+      padding: 140px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .sobre-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 52px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+    .sobre-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: #4A9CC4;
+      text-transform: lowercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sobre-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: #4A9CC4;
+    }
+    .sobre-headline {
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: #0a0a0a;
+      margin-bottom: 32px;
+    }
+    .sobre-headline em {
+      font-style: italic;
+      font-weight: 300;
+      color: #4A9CC4;
+    }
+    .sobre-manifesto {
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.85;
+      color: #3a3a3a;
+    }
+    .sobre-manifesto p { margin-bottom: 20px; }
+    .sobre-manifesto strong { color: #0a0a0a; font-weight: 700; }
+    .sobre-right {
+      position: relative;
+    }
+    .sobre-img-main {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .sobre-img-accent {
+      position: absolute;
+      bottom: -40px;
+      left: -40px;
+      width: 55%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 6px solid #f0ede8;
+    }
+    .sobre-stats-row {
+      display: flex;
+      gap: 40px;
+      margin-top: 52px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(10,10,10,0.12);
+    }
+    .sobre-stat { }
+    .sobre-stat-n {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #0a0a0a;
+      line-height: 1;
+    }
+    .sobre-stat-l {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #888;
+      margin-top: 6px;
+      text-transform: lowercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* mascotes */
+    .mascotes-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 16px;
+      margin-top: 60px;
+    }
+    .mascote-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .mascote-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+    }
+    .mascote-card img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      margin-bottom: 14px;
+    }
+    .mascote-card h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0a0a0a;
+      margin-bottom: 8px;
+    }
+    .mascote-card p {
+      font-size: 0.78rem;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    /* ─── SECTION: PORTFÓLIO ───────────────────────────────── */
+    #portfolio {
+      background: #0a0a0a;
+      padding: 140px 0;
+      position: relative;
+    }
+    .portfolio-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
+    .portfolio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 64px;
+    }
+    .portfolio-title-block {}
+    .portfolio-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: #4A9CC4;
+      text-transform: lowercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .portfolio-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: #4A9CC4;
+    }
+    .portfolio-headline {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: #f0ede8;
+    }
+    /* portfolio grid — 3 categorias */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+    }
+    .categoria-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      aspect-ratio: 3/4;
+      background: #1a1a1a;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .categoria-card:hover { transform: translateY(-6px); }
+    .categoria-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .categoria-card:hover img { transform: scale(1.06); }
+    .categoria-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0.35) 45%, rgba(5,5,5,0.1) 100%);
+      transition: background 0.4s;
+    }
+    .categoria-card:hover .categoria-overlay {
+      background: linear-gradient(to top, rgba(5,15,25,0.92) 0%, rgba(10,35,55,0.45) 50%, rgba(5,5,5,0.15) 100%);
+    }
+    .categoria-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 34px 30px;
+    }
+    .categoria-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: #4A9CC4;
+      text-transform: lowercase;
+      margin-bottom: 10px;
+    }
+    .categoria-title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #f0ede8;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .categoria-arrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #4A9CC4;
+      text-transform: lowercase;
+      letter-spacing: 0.08em;
+    }
+    .categoria-arrow svg { transition: transform 0.3s; }
+    .categoria-card:hover .categoria-arrow svg { transform: translateX(6px); }
+    /* ─── PORTFOLIO OVERLAY PAGES ──────────────────────────── */
+    .portfolio-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 800;
+      background: #0a0a0a;
+      overflow-y: auto;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .portfolio-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .overlay-close {
+      position: fixed;
+      top: 32px; right: 40px;
+      z-index: 900;
+      background: rgba(240,237,232,0.1);
+      border: 1px solid rgba(240,237,232,0.15);
+      color: #f0ede8;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      backdrop-filter: blur(10px);
+      transition: background 0.3s, transform 0.3s;
+      cursor: pointer;
+      font-family: 'Manrope', sans-serif;
+    }
+    .overlay-close:hover {
+      background: rgba(74,156,196,0.2);
+      transform: scale(1.08);
+    }
+    .overlay-hero {
+      width: 100%;
+      height: 65vh;
+      position: relative;
+      overflow: hidden;
+    }
+    .overlay-hero img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .overlay-hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.8) 100%);
+    }
+    .overlay-hero-content {
+      position: absolute;
+      bottom: 60px;
+      left: 60px;
+      right: 60px;
+    }
+    .overlay-hero-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: #4A9CC4;
+      text-transform: lowercase;
+      margin-bottom: 16px;
+    }
+    .overlay-hero-title {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800;
+      color: #f0ede8;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+    .overlay-body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 60px;
+    }
+    .overlay-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      margin-bottom: 80px;
+      padding-bottom: 80px;
+      border-bottom: 1px solid rgba(240,237,232,0.08);
+    }
+    .overlay-intro-text {
+      font-size: 1.15rem;
+      line-height: 1.85;
+      color: rgba(240,237,232,0.75);
+    }
+    .overlay-intro-text p { margin-bottom: 20px; }
+    .overlay-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .feature-item {
+      padding: 24px;
+      background: rgba(240,237,232,0.04);
+      border: 1px solid rgba(240,237,232,0.07);
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    .feature-item:hover { background: rgba(74,156,196,0.06); }
+    .feature-icon {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+    .feature-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #f0ede8;
+      margin-bottom: 6px;
+    }
+    .feature-desc {
+      font-size: 0.78rem;
+      color: rgba(240,237,232,0.45);
+      line-height: 1.6;
+    }
+    .overlay-gallery {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+    }
+    .overlay-gallery-img {
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .overlay-gallery-img:hover { transform: scale(1.02); }
+    .overlay-gallery-img.tall {
+      grid-row: span 2;
+      aspect-ratio: auto;
+    }
+    .overlay-placeholder {
+      aspect-ratio: 4/3;
+      background: rgba(240,237,232,0.04);
+      border: 1px dashed rgba(240,237,232,0.12);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: rgba(240,237,232,0.25);
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-transform: lowercase;
+    }
+    .overlay-placeholder svg { opacity: 0.3; }
+    .overlay-gallery-cta {
+      margin-top: 60px;
+      text-align: center;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #4A9CC4;
+      color: #fff;
+      padding: 16px 40px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: lowercase;
+      letter-spacing: 0.06em;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .btn-primary:hover {
+      background: #3a8ab4;
+      transform: translateY(-2px);
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────────── */
+    footer {
+      background: #050505;
+      padding: 80px 0 48px;
+      border-top: 1px solid rgba(240,237,232,0.06);
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 52px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+      padding-bottom: 60px;
+      border-bottom: 1px solid rgba(240,237,232,0.06);
+    }
+    .footer-brand img {
+      height: 32px;
+      filter: brightness(0) invert(1);
+      margin-bottom: 20px;
+    }
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: rgba(240,237,232,0.4);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer-seal {
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-seal img { height: 44px; opacity: 0.7; }
+    .footer-seal span {
+      font-size: 0.72rem;
+      color: rgba(240,237,232,0.35);
+      line-height: 1.4;
+      max-width: 140px;
+    }
+    .footer-col h5 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: rgba(240,237,232,0.35);
+      text-transform: lowercase;
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 12px; }
+    .footer-col ul a {
+      font-size: 0.85rem;
+      color: rgba(240,237,232,0.55);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-col ul a:hover { color: #f0ede8; }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p {
+      font-size: 0.78rem;
+      color: rgba(240,237,232,0.25);
+    }
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+    .footer-social a {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(240,237,232,0.12);
+      color: rgba(240,237,232,0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+    }
+    .footer-social a:hover {
+      border-color: #4A9CC4;
+      color: #4A9CC4;
+    }
+
+    /* ─── ANIMATIONS ───────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal-left.revealed { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal-right.revealed { opacity: 1; transform: translateX(0); }
+
+    /* delay utilities */
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+
+    /* ─── MISC ─────────────────────────────────────────────── */
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      padding: 5px 14px;
+      border-radius: 100px;
+      background: rgba(74,156,196,0.12);
+      color: #4A9CC4;
+      text-transform: lowercase;
+      margin-bottom: 12px;
+    }
+
+    /* noise texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.5;
+    }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .sobre-inner { grid-template-columns: 1fr; gap: 60px; }
+      .sobre-img-accent { display: none; }
+      .portfolio-header { flex-direction: column; gap: 32px; align-items: flex-start; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .overlay-intro { grid-template-columns: 1fr; gap: 40px; }
+      .overlay-gallery { grid-template-columns: 1fr 1fr; }
+      .overlay-gallery-img.tall { grid-row: auto; aspect-ratio: 4/3; }
+      .mascotes-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ─── NAV ─────────────────────────────────────────────── -->
+  <nav id="mainNav">
+    <a href="#inicio" class="nav-logo">
+      <img src="logo-bp.png" alt="bp construções" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#sobre">sobre nós</a></li>
+      <li><a href="#portfolio">portfólio</a></li>
+      <li><a href="#contato">contato</a></li>
+    </ul>
+    <a href="https://wa.me/5541999954592?text=olá%2C%20gostaria%20de%20um%20orçamento" target="_blank" class="nav-cta">falar agora →</a>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────────────────── -->
+  <section id="inicio" style="height:0;"></section>
+  <section id="hero">
+    <div class="hero-sticky" id="heroSticky">
+      <video id="hero-video" muted playsinline preload="auto" src="video-hero.mp4"></video>
+      <div class="hero-overlay"></div>
+
+      <!-- Opening Title -->
+      <div class="ht-block opening" id="ht0" data-start="0" data-end="0.18">
+        <div class="ht-eyebrow">há 10 anos · curitiba</div>
+        <h1 class="ht-headline">obras<br/><em>descomplicadas</em></h1>
+        <p class="ht-sub">uma construtora que fala como gente<br/>e entrega como ninguém.</p>
+      </div>
+
+      <!-- Block 1 — Left -->
+      <div class="ht-block left" id="ht1" style="top:50%;transform:translate(0,-50%) translateX(-50px)" data-start="0.18" data-end="0.38">
+        <div class="ht-eyebrow">experiência comprovada</div>
+        <h2 class="ht-headline">uma <em>década</em><br/>construindo</h2>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number">10</div>
+            <div class="stat-label">anos de mercado</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">165+</div>
+            <div class="stat-label">obras executadas</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">40+</div>
+            <div class="stat-label">escritórios atendidos</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Block 2 — Right -->
+      <div class="ht-block right" id="ht2" style="top:50%;transform:translate(0,-50%) translateX(50px)" data-start="0.38" data-end="0.58">
+        <div class="ht-eyebrow">nossa metodologia</div>
+        <h2 class="ht-headline"><em>integração</em><br/>total</h2>
+        <p class="ht-sub">não existem paredes entre<br/>clientes, engenheiros e arquitetos.<br/>o projeto nasce em conjunto.</p>
+      </div>
+
+      <!-- Block 3 — Left -->
+      <div class="ht-block left" id="ht3" style="top:50%;transform:translate(0,-50%) translateX(-50px)" data-start="0.58" data-end="0.78">
+        <div class="ht-eyebrow">padrão de execução</div>
+        <h2 class="ht-headline">cada <em>detalhe</em><br/>verificado</h2>
+        <p class="ht-sub">da leitura do projeto ao revestimento,<br/>conferência técnica rigorosa<br/>em cada etapa do processo.</p>
+      </div>
+
+      <!-- Block 4 — Center / CTA -->
+      <div class="ht-block center" id="ht4" data-start="0.78" data-end="1.0">
+        <div class="ht-eyebrow">vamos construir juntos?</div>
+        <h2 class="ht-headline">o seu sonho<br/>é o nosso <em>projeto</em></h2>
+        <p class="ht-sub" style="margin-bottom:36px;">tijolo por tijolo, construindo o que importa.</p>
+        <a href="https://wa.me/5541999954592?text=olá%2C%20gostaria%20de%20um%20orçamento" target="_blank" class="btn-primary">
+          pedir orçamento
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Scroll hint -->
+      <div class="scroll-hint" id="scrollHint">
+        <span>role para explorar</span>
+        <div class="scroll-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SOBRE NÓS ─────────────────────────────────────────── -->
+  <section id="sobre">
+    <div class="sobre-inner">
+      <div>
+        <div class="sobre-label reveal">sobre nós</div>
+        <h2 class="sobre-headline reveal d1">
+          construímos com a<br/>cabeça, a técnica<br/>e o <em>coração</em>
+        </h2>
+        <div class="sobre-manifesto reveal d2">
+          <p>por que pensar que <strong>"obra só dá dor de cabeça"</strong>, se a gente pode usar as nossas cabeças para oferecer soluções inteligentes e descomplicadas?</p>
+          <p>da leitura do projeto ao revestimento, pensamos em cada detalhe para minimizar os imprevistos e maximizar os acertos.</p>
+          <p>investimos tempo em relacionamento para que tudo flua de forma leve, em todas as etapas do processo.</p>
+        </div>
+
+        <div class="sobre-stats-row reveal d3">
+          <div class="sobre-stat">
+            <div class="sobre-stat-n">10</div>
+            <div class="sobre-stat-l">anos de mercado</div>
+          </div>
+          <div class="sobre-stat">
+            <div class="sobre-stat-n">165+</div>
+            <div class="sobre-stat-l">obras executadas</div>
+          </div>
+          <div class="sobre-stat">
+            <div class="sobre-stat-n">40+</div>
+            <div class="sobre-stat-l">escritórios parceiros</div>
+          </div>
+        </div>
+
+        <div class="mascotes-grid reveal d4">
+          <div class="mascote-card">
+            <img src="personagem_ferramenta.png" alt="execução técnica" />
+            <h4>padrão técnico</h4>
+            <p>conferência rigorosa em cada etapa da obra</p>
+          </div>
+          <div class="mascote-card">
+            <img src="personagem_marmita.png" alt="mão na massa" />
+            <h4>mão na massa</h4>
+            <p>equipe multidisciplinar atuando junto do zero</p>
+          </div>
+          <div class="mascote-card">
+            <img src="personagem_positivo.png" alt="resultado" />
+            <h4>resultado</h4>
+            <p>ver o projeto virar concreto é o que nos move</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sobre-right reveal-right">
+        <img src="01.webp" alt="obra bp construções" class="sobre-img-main" />
+        <img src="capa (4).webp" alt="detalhe de obra" class="sobre-img-accent" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PORTFÓLIO ─────────────────────────────────────────── -->
+  <section id="portfolio">
+    <div class="portfolio-inner">
+      <div class="portfolio-header">
+        <div class="portfolio-title-block">
+          <div class="portfolio-label reveal">portfólio</div>
+          <h2 class="portfolio-headline reveal d1">obras que carregam<br/>a nossa <em style="font-style:italic;font-weight:300;color:#4A9CC4">assinatura</em></h2>
+        </div>
+      </div>
+
+      <div class="portfolio-grid reveal">
+        <div class="categoria-card" onclick="openOverlay('residenciais')">
+          <img src="capa.webp" alt="projetos residenciais" />
+          <div class="categoria-overlay"></div>
+          <div class="categoria-info">
+            <div class="categoria-label">explorar categoria</div>
+            <div class="categoria-title">residenciais</div>
+            <div class="categoria-arrow">
+              ver projetos
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="#4A9CC4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="categoria-card" onclick="openOverlay('comerciais')">
+          <img src="capa (4).webp" alt="projetos comerciais" />
+          <div class="categoria-overlay"></div>
+          <div class="categoria-info">
+            <div class="categoria-label">explorar categoria</div>
+            <div class="categoria-title">comerciais</div>
+            <div class="categoria-arrow">
+              ver projetos
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="#4A9CC4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="categoria-card" onclick="openOverlay('empresariais')">
+          <img src="capa (3).webp" alt="projetos empresariais" />
+          <div class="categoria-overlay"></div>
+          <div class="categoria-info">
+            <div class="categoria-label">explorar categoria</div>
+            <div class="categoria-title">empresariais</div>
+            <div class="categoria-arrow">
+              ver projetos
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="#4A9CC4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTATO / FOOTER ──────────────────────────────────── -->
+  <section id="contato"></section>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="logo-bp.png" alt="bp construções" />
+          <p>obras descomplicadas em curitiba, desde 2014. construindo com técnica, cuidado e muita conversa.</p>
+          <div class="footer-seal">
+            <img src="log_npdd.png" alt="Selo NPDD" />
+            <span>primeira construtora com o selo do núcleo paranaense de decoração</span>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>navegação</h5>
+          <ul>
+            <li><a href="#inicio">início</a></li>
+            <li><a href="#sobre">sobre nós</a></li>
+            <li><a href="#portfolio">portfólio</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>portfólio</h5>
+          <ul>
+            <li><a href="#" onclick="openOverlay('residenciais');return false;">residenciais</a></li>
+            <li><a href="#" onclick="openOverlay('comerciais');return false;">comerciais</a></li>
+            <li><a href="#" onclick="openOverlay('empresariais');return false;">empresariais</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>contato</h5>
+          <ul>
+            <li><a href="https://wa.me/5541999954592" target="_blank">41 99995.4592</a></li>
+            <li><a href="mailto:contato@bpconstrucoes.com">contato@bpconstrucoes.com</a></li>
+            <li><a href="https://instagram.com/bp.construcoes" target="_blank">@bp.construcoes</a></li>
+            <li><a href="https://maps.google.com/?q=Alameda+Júlia+da+Costa+513+Curitiba" target="_blank">al. júlia da costa, 513 — cwb</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 bp construções · curitiba, brasil</p>
+        <div class="footer-social">
+          <a href="https://instagram.com/bp.construcoes" target="_blank" title="Instagram">ig</a>
+          <a href="https://wa.me/5541999954592" target="_blank" title="WhatsApp">wa</a>
+          <a href="mailto:contato@bpconstrucoes.com" title="Email">@</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── OVERLAY: RESIDENCIAIS ─────────────────────────────── -->
+  <div class="portfolio-overlay" id="overlay-residenciais">
+    <button class="overlay-close" onclick="closeOverlay()">✕</button>
+    <div class="overlay-hero">
+      <img src="capa (3).webp" alt="residenciais bp construções" />
+      <div class="overlay-hero-bg"></div>
+      <div class="overlay-hero-content">
+        <div class="overlay-hero-label">portfólio · categoria</div>
+        <h2 class="overlay-hero-title">projetos<br/>residenciais</h2>
+      </div>
+    </div>
+    <div class="overlay-body">
+      <div class="overlay-intro">
+        <div class="overlay-intro-text">
+          <p>casas e apartamentos que refletem quem você é. da planta ao último revestimento, cada projeto residencial é tratado como se fosse o nosso.</p>
+          <p>trabalhamos com arquitetos parceiros e clientes diretos, garantindo que o resultado final seja exatamente o que foi imaginado — ou melhor.</p>
+          <a href="https://wa.me/5541999954592?text=olá%2C%20tenho%20interesse%20em%20um%20projeto%20residencial" target="_blank" class="btn-primary" style="margin-top:12px">orçar meu projeto</a>
+        </div>
+        <div class="overlay-features">
+          <div class="feature-item">
+            <div class="feature-icon">🏠</div>
+            <div class="feature-title">reformas completas</div>
+            <div class="feature-desc">do demolição ao acabamento</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🪵</div>
+            <div class="feature-title">marcenaria integrada</div>
+            <div class="feature-desc">mobiliário sob medida no projeto</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-title">instalações</div>
+            <div class="feature-desc">elétrica, hidráulica e ar-condicionado</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">✓</div>
+            <div class="feature-title">gestão completa</div>
+            <div class="feature-desc">você acompanha tudo, sem estresse</div>
+          </div>
+        </div>
+      </div>
+      <div class="overlay-gallery">
+        <img src="capa.webp" alt="projeto residencial 1" class="overlay-gallery-img tall" />
+        <img src="capa (1).webp" alt="projeto residencial 2" class="overlay-gallery-img" />
+        <img src="capa (2).webp" alt="projeto residencial 3" class="overlay-gallery-img" />
+        <img src="capa (3).webp" alt="projeto residencial 4" class="overlay-gallery-img" />
+        <img src="01.webp" alt="projeto residencial 5" class="overlay-gallery-img" />
+        <div class="overlay-placeholder">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="24" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 22l7-7 5 5 4-4 8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          foto em breve
+        </div>
+      </div>
+      <div class="overlay-gallery-cta">
+        <a href="https://wa.me/5541999954592?text=olá%2C%20gostaria%20de%20um%20orçamento" target="_blank" class="btn-primary">
+          falar com a equipe
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── OVERLAY: COMERCIAIS ───────────────────────────────── -->
+  <div class="portfolio-overlay" id="overlay-comerciais">
+    <button class="overlay-close" onclick="closeOverlay()">✕</button>
+    <div class="overlay-hero">
+      <img src="capa (4).webp" alt="comerciais bp construções" />
+      <div class="overlay-hero-bg"></div>
+      <div class="overlay-hero-content">
+        <div class="overlay-hero-label">portfólio · categoria</div>
+        <h2 class="overlay-hero-title">projetos<br/>comerciais</h2>
+      </div>
+    </div>
+    <div class="overlay-body">
+      <div class="overlay-intro">
+        <div class="overlay-intro-text">
+          <p>ambientes que comunicam. lojas, clínicas, restaurantes e escritórios que impressionam clientes e motivam equipes desde o primeiro olhar.</p>
+          <p>já atendemos mais de 40 escritórios de arquitetura em curitiba — sabemos como transformar projetos ousados em realidade, dentro do prazo e sem surpresas.</p>
+          <a href="https://wa.me/5541999954592?text=olá%2C%20tenho%20interesse%20em%20um%20projeto%20comercial" target="_blank" class="btn-primary" style="margin-top:12px">orçar meu projeto</a>
+        </div>
+        <div class="overlay-features">
+          <div class="feature-item">
+            <div class="feature-icon">🏪</div>
+            <div class="feature-title">lojas & varejo</div>
+            <div class="feature-desc">ambientes que vendem antes mesmo do produto</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🍽️</div>
+            <div class="feature-title">food & hospitality</div>
+            <div class="feature-desc">experiência do ambiente como parte do cardápio</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🏥</div>
+            <div class="feature-title">clínicas & saúde</div>
+            <div class="feature-desc">espaços que transmitem cuidado e confiança</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🖥️</div>
+            <div class="feature-title">escritórios</div>
+            <div class="feature-desc">do coworking ao corporativo de alto padrão</div>
+          </div>
+        </div>
+      </div>
+      <div class="overlay-gallery">
+        <img src="capa (4).webp" alt="projeto comercial 1" class="overlay-gallery-img tall" />
+        <div class="overlay-placeholder">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="24" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 22l7-7 5 5 4-4 8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          foto em breve
+        </div>
+        <div class="overlay-placeholder">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="24" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 22l7-7 5 5 4-4 8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          foto em breve
+        </div>
+        <div class="overlay-placeholder">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="24" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 22l7-7 5 5 4-4 8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          foto em breve
+        </div>
+        <div class="overlay-placeholder">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="24" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 22l7-7 5 5 4-4 8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          foto em breve
+        </div>
+      </div>
+      <div class="overlay-gallery-cta">
+        <a href="https://wa.me/5541999954592?text=olá%2C%20gostaria%20de%20um%20orçamento" target="_blank" class="btn-primary">
+          falar com a equipe
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── OVERLAY: EMPRESARIAIS ─────────────────────────────── -->
+  <div class="portfolio-overlay" id="overlay-empresariais">
+    <button class="overlay-close" onclick="closeOverlay()">✕</button>
+    <div class="overlay-hero" style="background: linear-gradient(135deg, #0f1f2e, #1d3a52);">
+      <div class="overlay-hero-bg" style="background:rgba(10,10,10,0.4)"></div>
+      <div class="overlay-hero-content">
+        <div class="overlay-hero-label">portfólio · categoria</div>
+        <h2 class="overlay-hero-title">projetos<br/>empresariais</h2>
+      </div>
+    </div>
+    <div class="overlay-body">
+      <div class="overlay-intro">
+        <div class="overlay-intro-text">
+          <p>grandes projetos pedem grande responsabilidade. obras empresariais de médio e grande porte, com gestão integrada, equipe multidisciplinar e cronograma rigoroso.</p>
+          <p>da planta ao acabamento final, coordenamos todos os fornecedores e disciplinas para que a entrega seja impecável — sempre.</p>
+          <a href="https://wa.me/5541999954592?text=olá%2C%20tenho%20interesse%20em%20um%20projeto%20empresarial" target="_blank" class="btn-primary" style="margin-top:12px">conversar sobre o projeto</a>
+        </div>
+        <div class="overlay-features">
+          <div class="feature-item">
+            <div class="feature-icon">🏢</div>
+            <div class="feature-title">edifícios corporativos</div>
+            <div class="feature-desc">andares completos, lobbies e áreas comuns</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📐</div>
+            <div class="feature-title">gestão de obras</div>
+            <div class="feature-desc">coordenação de projetos complexos e multidisciplinares</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔧</div>
+            <div class="feature-title">manutenção predial</div>
+            <div class="feature-desc">contratos de longo prazo com equipe dedicada</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📋</div>
+            <div class="feature-title">due diligence técnica</div>
+            <div class="feature-desc">laudo e consultoria para aquisição de imóveis</div>
+          </div>
+        </div>
+      </div>
+      <div class="overlay-gallery">
+        <div class="overlay-placeholder" style="grid-column:span 3;aspect-ratio:16/6;font-size:0.9rem;flex-direction:row;gap:16px;">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="4" width="24" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 22l7-7 5 5 4-4 8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          fotos dos projetos empresariais em breve · entre em contato para conhecer nosso portfólio completo
+        </div>
+      </div>
+      <div class="overlay-gallery-cta">
+        <a href="https://wa.me/5541999954592?text=olá%2C%20gostaria%20de%20conhecer%20o%20portfólio%20empresarial" target="_blank" class="btn-primary">
+          conhecer portfólio completo
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── JAVASCRIPT ─────────────────────────────────────────── -->
+  <script>
+    /* ── CURSOR ─────────────────────────────────────────── */
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      cursorRing.style.left = rx + 'px';
+      cursorRing.style.top = ry + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button, .categoria-card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '18px';
+        cursor.style.height = '18px';
+        cursorRing.style.width = '52px';
+        cursorRing.style.height = '52px';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '10px';
+        cursor.style.height = '10px';
+        cursorRing.style.width = '36px';
+        cursorRing.style.height = '36px';
+      });
+    });
+
+    /* ── NAV SCROLL ─────────────────────────────────────── */
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    /* ── VIDEO HERO SCRUBBING ────────────────────────────── */
+    const heroSection = document.getElementById('hero');
+    const video = document.getElementById('hero-video');
+    const scrollHint = document.getElementById('scrollHint');
+
+    // text blocks
+    const htBlocks = document.querySelectorAll('.ht-block');
+
+    // Fix transforms for left/right blocks (preserve centered Y)
+    document.querySelectorAll('.ht-block.left').forEach(b => {
+      b.style.cssText = `
+        position:absolute; top:50%; left:8%; max-width:480px;
+        transform:translate(0,-50%) translateX(-50px);
+        opacity:0;
+        transition:opacity 0.7s cubic-bezier(.25,.46,.45,.94),transform 0.7s cubic-bezier(.25,.46,.45,.94);
+        will-change:opacity,transform;
+      `;
+    });
+    document.querySelectorAll('.ht-block.right').forEach(b => {
+      b.style.cssText = `
+        position:absolute; top:50%; right:8%; max-width:480px;
+        transform:translate(0,-50%) translateX(50px);
+        opacity:0; text-align:right;
+        transition:opacity 0.7s cubic-bezier(.25,.46,.45,.94),transform 0.7s cubic-bezier(.25,.46,.45,.94);
+        will-change:opacity,transform;
+      `;
+    });
+
+    let videoReady = false;
+    video.addEventListener('loadedmetadata', () => { videoReady = true; video.pause(); });
+    video.addEventListener('canplaythrough', () => { videoReady = true; });
+    // Try to load
+    video.load();
+
+    // progresso alvo (scroll cru) x progresso renderizado (suavizado)
+    let targetProgress = 0;
+    let smoothProgress = 0;
+
+    function readScroll() {
+      const heroHeight = heroSection.offsetHeight;
+      const maxScroll = heroHeight - window.innerHeight;
+      targetProgress = maxScroll > 0
+        ? Math.min(Math.max(window.scrollY / maxScroll, 0), 1)
+        : 0;
+
+      // aba em segundo plano: rAF não roda, então aplica direto
+      if (document.hidden) {
+        smoothProgress = targetProgress;
+        updateHero(smoothProgress);
+      }
+    }
+
+    // ao voltar para a aba, sincroniza sem varrer o vídeo inteiro
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        readScroll();
+        smoothProgress = targetProgress;
+      }
+    });
+
+    // loop contínuo: o vídeo acompanha o scroll quadro a quadro,
+    // sem esperar o fim do gesto
+    function heroLoop() {
+      smoothProgress += (targetProgress - smoothProgress) * 0.12;
+      if (Math.abs(targetProgress - smoothProgress) < 0.0005) {
+        smoothProgress = targetProgress;
+      }
+      updateHero(smoothProgress);
+      requestAnimationFrame(heroLoop);
+    }
+
+    function updateHero(progress) {
+      const scrollY = window.scrollY;
+
+      // scrub video — só busca se o decoder não estiver ocupado,
+      // evitando fila de seeks e travadas
+      if (videoReady && video.duration && isFinite(video.duration) && !video.seeking) {
+        const targetTime = video.duration * progress;
+        if (Math.abs(video.currentTime - targetTime) > 0.015) {
+          if (typeof video.fastSeek === 'function') {
+            video.fastSeek(targetTime);
+          } else {
+            video.currentTime = targetTime;
+          }
+        }
+      }
+
+      // scroll hint
+      scrollHint.classList.toggle('hidden', scrollY > 80);
+
+      // text blocks
+      htBlocks.forEach(block => {
+        const start = parseFloat(block.dataset.start);
+        const end = parseFloat(block.dataset.end);
+        const active = progress >= start && progress <= end;
+
+        if (active && !block.classList.contains('visible')) {
+          block.classList.add('visible');
+          if (block.classList.contains('left')) {
+            block.style.transform = 'translate(0,-50%) translateX(0)';
+          } else if (block.classList.contains('right')) {
+            block.style.transform = 'translate(0,-50%) translateX(0)';
+          } else if (block.classList.contains('center')) {
+            block.style.transform = 'translate(-50%,-50%) scale(1)';
+          } else if (block.classList.contains('opening')) {
+            block.style.transform = 'translate(-50%,-50%)';
+          }
+          block.style.opacity = '1';
+        } else if (!active && block.classList.contains('visible')) {
+          block.classList.remove('visible');
+          if (block.classList.contains('left')) {
+            block.style.transform = 'translate(0,-50%) translateX(-50px)';
+          } else if (block.classList.contains('right')) {
+            block.style.transform = 'translate(0,-50%) translateX(50px)';
+          } else if (block.classList.contains('center')) {
+            block.style.transform = 'translate(-50%,-50%) scale(0.96)';
+          } else if (block.classList.contains('opening')) {
+            block.style.transform = 'translate(-50%,-50%)';
+          }
+          block.style.opacity = '0';
+        }
+      });
+    }
+
+    // Show opening block immediately
+    const opening = document.getElementById('ht0');
+    opening.style.left = '50%';
+    opening.style.top = '50%';
+    opening.style.transform = 'translate(-50%,-50%)';
+    opening.style.textAlign = 'center';
+    opening.style.maxWidth = '800px';
+    opening.style.position = 'absolute';
+    opening.style.opacity = '1';
+    opening.style.transition = 'opacity 0.9s, transform 0.9s';
+
+    window.addEventListener('scroll', readScroll, { passive: true });
+    window.addEventListener('resize', readScroll, { passive: true });
+    readScroll();
+    smoothProgress = targetProgress;
+    heroLoop();
+
+    /* ── INTERSECTION OBSERVER — reveal ─────────────────── */
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('revealed');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+
+    /* ── PORTFOLIO OVERLAYS ──────────────────────────────── */
+    function openOverlay(type) {
+      const overlay = document.getElementById('overlay-' + type);
+      if (!overlay) return;
+      document.body.style.overflow = 'hidden';
+      overlay.classList.add('open');
+      overlay.scrollTop = 0;
+
+    }
+
+    function closeOverlay() {
+      document.querySelectorAll('.portfolio-overlay').forEach(o => o.classList.remove('open'));
+      document.body.style.overflow = '';
+    }
+
+    // close on ESC
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeOverlay();
+    });
+
+    // Make functions global
+    window.openOverlay = openOverlay;
+    window.closeOverlay = closeOverlay;
+  </script>
+</body>
+</html>
