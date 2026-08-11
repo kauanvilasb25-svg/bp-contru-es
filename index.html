@@ -864,10 +864,7 @@
   <section id="inicio" style="height:0;"></section>
   <section id="hero">
     <div class="hero-sticky" id="heroSticky">
-      <video id="hero-video" muted playsinline preload="auto">
-        <source src="video-hero.webm" type="video/webm" />
-        <source src="video-hero2.mp4" type="video/mp4" />
-      </video>
+      <video id="hero-video" muted playsinline preload="auto" src="video-hero2.mp4"></video>
       <div class="hero-overlay"></div>
 
       <!-- Opening Title -->
@@ -1361,11 +1358,12 @@
       }
     });
 
-    // loop contínuo: o vídeo acompanha o scroll quadro a quadro,
-    // sem esperar o fim do gesto
+    // throttle de seek: no máximo 1 seek a cada 60ms (~16fps) para aliviar o decoder
+    let lastSeekTime = 0;
+
     function heroLoop() {
-      smoothProgress += (targetProgress - smoothProgress) * 0.12;
-      if (Math.abs(targetProgress - smoothProgress) < 0.0005) {
+      smoothProgress += (targetProgress - smoothProgress) * 0.07;
+      if (Math.abs(targetProgress - smoothProgress) < 0.001) {
         smoothProgress = targetProgress;
       }
       updateHero(smoothProgress);
@@ -1374,17 +1372,15 @@
 
     function updateHero(progress) {
       const scrollY = window.scrollY;
+      const now = performance.now();
 
-      // scrub video — só busca se o decoder não estiver ocupado,
-      // evitando fila de seeks e travadas
-      if (videoReady && video.duration && isFinite(video.duration) && !video.seeking) {
+      // seek throttled a ~16fps e com threshold alto para poupar o decoder do mp4
+      if (videoReady && video.duration && isFinite(video.duration)
+          && !video.seeking && (now - lastSeekTime) > 60) {
         const targetTime = video.duration * progress;
-        if (Math.abs(video.currentTime - targetTime) > 0.015) {
-          if (typeof video.fastSeek === 'function') {
-            video.fastSeek(targetTime);
-          } else {
-            video.currentTime = targetTime;
-          }
+        if (Math.abs(video.currentTime - targetTime) > 0.08) {
+          video.currentTime = targetTime;
+          lastSeekTime = now;
         }
       }
 
